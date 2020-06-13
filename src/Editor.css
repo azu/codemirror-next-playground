@@ -1,0 +1,14 @@
+.Editor,
+.EditorWrapper {
+    width: 100%;
+    height: 100%;
+}
+
+.EditorWrapper {
+    font-size: 20px;
+}
+
+.cm-wrap {
+    height: 100%;
+    border: 1px solid silver;
+}
