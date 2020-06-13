@@ -14,16 +14,16 @@ import { defaultKeymap, indentSelection } from "@codemirror/next/commands";
 import { searchKeymap } from "@codemirror/next/search";
 import { commentKeymap } from "@codemirror/next/comment";
 import { gotoLine } from "@codemirror/next/goto-line";
-import React, { createRef, useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 export const Editor = () => {
-    const ref = createRef<HTMLDivElement>();
+    const ref = useRef<HTMLDivElement>(null);
     const [editor, setEditor] = useState();
     const onClick = useCallback(() => {
         console.log(editor);
     }, [editor]);
     useEffect(() => {
-        if (ref.current && !editor) {
+        if (ref.current) {
             const editorView = new EditorView({
                 state: EditorState.create({
                     doc: "",
@@ -52,11 +52,11 @@ export const Editor = () => {
             });
             setEditor(editorView);
             ref.current.append(editorView.dom);
+            return () => {
+                editorView.destroy();
+            };
         }
-        return () => {
-            console.log("dispose");
-        };
-    }, [ref, editor]);
+    }, [ref]);
     return (
         <div className={"Editor"}>
             <div className={"EditorWrapper"} ref={ref} />
